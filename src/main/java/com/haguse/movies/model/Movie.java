@@ -20,7 +20,8 @@ public class Movie {
 
     private String name;
 
-    private String genera;
+    private String category;
 
     private LocalDate releaseDate;
+
 }

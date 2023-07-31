@@ -37,13 +37,13 @@ public class MovieServiceTest {
         this.avatarMovie = new Movie();
         this.avatarMovie.setId(1L);
         this.avatarMovie.setName("Avatar");
-        this.avatarMovie.setGenera("Action");
+        this.avatarMovie.setCategory("Action");
         this.avatarMovie.setReleaseDate(LocalDate.of(1998, Month.FEBRUARY, 11));
 
         this.titanicMovie = new Movie();
         this.titanicMovie.setId(2L);
         this.titanicMovie.setName("Titanic");
-        this.titanicMovie.setGenera("Romance");
+        this.titanicMovie.setCategory("Romance");
         this.titanicMovie.setReleaseDate(LocalDate.of(1986, Month.FEBRUARY, 11));
     }
 
@@ -52,7 +52,7 @@ public class MovieServiceTest {
     void save() {
         when(this.movieRepository.save(any(Movie.class))).thenReturn(this.avatarMovie);
 
-        Movie newMovie = this.movieService.save(this.avatarMovie);
+        Movie newMovie = this.movieService.saveMovie(this.avatarMovie);
 
         assertNotNull(newMovie);
         assertEquals(newMovie.getName(), this.avatarMovie.getName());
@@ -67,7 +67,7 @@ public class MovieServiceTest {
 
         when(this.movieRepository.findAll()).thenReturn(newMovies);
 
-        List<Movie> existingMovies = this.movieService.getAllMovies();
+        List<Movie> existingMovies = this.movieService.fetchAllMovies();
 
         assertNotNull(existingMovies);
         assertEquals(2, existingMovies.size());
@@ -78,7 +78,7 @@ public class MovieServiceTest {
     void getMovieById() {
         when(this.movieRepository.findById(anyLong())).thenReturn(Optional.of(this.avatarMovie));
 
-        Movie existingMovie = this.movieService.getMovieById(1L);
+        Movie existingMovie = this.movieService.fetchMovieById(1L);
 
         assertNotNull(existingMovie);
         assertEquals(this.avatarMovie.getId(), existingMovie.getId());
@@ -90,7 +90,7 @@ public class MovieServiceTest {
         when(movieRepository.findById(this.avatarMovie.getId())).thenReturn(Optional.of(this.avatarMovie));
 
         assertThrows(RuntimeException.class, () -> {
-            this.movieService.getMovieById(9999L);
+            this.movieService.fetchMovieById(9999L);
         });
     }
 

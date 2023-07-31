@@ -46,12 +46,12 @@ public class MovieControllerTest {
     void init() {
         this.avatarMovie = new Movie();
         this.avatarMovie.setName("Avatar");
-        this.avatarMovie.setGenera("Action");
+        this.avatarMovie.setCategory("Action");
         this.avatarMovie.setReleaseDate(LocalDate.of(1998, Month.FEBRUARY, 11));
 
         this.titanicMovie = new Movie();
         this.titanicMovie.setName("Titanic");
-        this.titanicMovie.setGenera("Romance");
+        this.titanicMovie.setCategory("Romance");
         this.titanicMovie.setReleaseDate(LocalDate.of(1986, Month.FEBRUARY, 11));
     }
 
@@ -60,14 +60,14 @@ public class MovieControllerTest {
     void createMovie() throws Exception {
         this.avatarMovie.setId(1L);
 
-        when(this.movieService.save(any(Movie.class))).thenReturn(avatarMovie);
+        when(this.movieService.saveMovie(any(Movie.class))).thenReturn(avatarMovie);
 
         this.mockMvc.perform(post("/movies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(avatarMovie)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(avatarMovie.getName())))
-                .andExpect(jsonPath("$.genera", is(avatarMovie.getGenera())))
+                .andExpect(jsonPath("$.category", is(avatarMovie.getCategory())))
                 .andExpect(jsonPath("$.releaseDate", is(avatarMovie.getReleaseDate().toString())));
     }
 
@@ -78,7 +78,7 @@ public class MovieControllerTest {
         movies.add(this.avatarMovie);
         movies.add(this.titanicMovie);
 
-        when(this.movieService.getAllMovies()).thenReturn(movies);
+        when(this.movieService.fetchAllMovies()).thenReturn(movies);
 
         this.mockMvc.perform(get("/movies"))
                 .andExpect(status().isOk())
@@ -90,12 +90,12 @@ public class MovieControllerTest {
     void getMovie() throws Exception {
         this.avatarMovie.setId(1L);
 
-        when(this.movieService.getMovieById(anyLong())).thenReturn(this.avatarMovie);
+        when(this.movieService.fetchMovieById(anyLong())).thenReturn(this.avatarMovie);
 
         this.mockMvc.perform(get("/movies/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(this.avatarMovie.getName())))
-                .andExpect(jsonPath("$.genera", is(this.avatarMovie.getGenera())))
+                .andExpect(jsonPath("$.category", is(this.avatarMovie.getCategory())))
                 .andExpect(jsonPath("$.releaseDate", is(this.avatarMovie.getReleaseDate().toString())));
     }
 
@@ -123,7 +123,7 @@ public class MovieControllerTest {
                     .content(this.objectMapper.writeValueAsString(this.avatarMovie)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(this.avatarMovie.getName())))
-                .andExpect(jsonPath("$.genera", is(this.avatarMovie.getGenera())))
+                .andExpect(jsonPath("$.category", is(this.avatarMovie.getCategory())))
                 .andExpect(jsonPath("$.releaseDate", is(this.avatarMovie.getReleaseDate().toString())));
     }
 

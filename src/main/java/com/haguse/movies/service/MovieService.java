@@ -13,7 +13,7 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    public Movie save(Movie movie) {
+    public Movie saveMovie(Movie movie) {
         try {
             return this.movieRepository.save(movie);
         } catch (Exception e) {
@@ -21,7 +21,7 @@ public class MovieService {
         }
     }
 
-    public List<Movie> getAllMovies() {
+    public List<Movie> fetchAllMovies() {
         try {
             return this.movieRepository.findAll();
         } catch (Exception e) {
@@ -29,9 +29,9 @@ public class MovieService {
         }
     }
 
-    public Movie getMovieById(Long id) {
+    public Movie fetchMovieById(Long id) {
         try {
-            return this.movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie found"));
+            return this.movieRepository.findById(id).orElseThrow(()-> new RuntimeException("Movie is not exist"));
         } catch (Exception e) {
             throw new RuntimeException("Unable to get movie");
         }
@@ -39,8 +39,8 @@ public class MovieService {
 
     public Movie updateMovie(Movie movie, Long id) {
         try {
-            Movie existingMovie = this.movieRepository.findById(id).get();
-            existingMovie.setGenera(movie.getGenera());
+            Movie existingMovie = this.movieRepository.findById(id).orElseThrow(()-> new RuntimeException("Movie is not exist"));
+            existingMovie.setCategory(movie.getCategory());
             existingMovie.setName(movie.getName());
             existingMovie.setReleaseDate(movie.getReleaseDate());
             return this.movieRepository.save(existingMovie);
@@ -51,7 +51,7 @@ public class MovieService {
 
     public void deleteMovie(Long id) {
         try {
-            Movie existingMovie = this.movieRepository.findById(id).get();
+            Movie existingMovie = this.movieRepository.findById(id).orElseThrow(()-> new RuntimeException("Movie is not exist"));
             this.movieRepository.delete(existingMovie);
         } catch (Exception e) {
             throw new RuntimeException("Unable to delete movie");

@@ -25,12 +25,12 @@ public class MovieRepositoryTest {
     void init() {
         this.avatarMovie = new Movie();
         this.avatarMovie.setName("Avatar");
-        this.avatarMovie.setGenera("Action");
+        this.avatarMovie.setCategory("Action");
         this.avatarMovie.setReleaseDate(LocalDate.of(1998, Month.FEBRUARY, 11));
 
         this.titanicMovie = new Movie();
         this.titanicMovie.setName("Titanic");
-        this.titanicMovie.setGenera("Romance");
+        this.titanicMovie.setCategory("Romance");
         this.titanicMovie.setReleaseDate(LocalDate.of(1986, Month.FEBRUARY, 11));
     }
 
@@ -62,22 +62,22 @@ public class MovieRepositoryTest {
         Movie existingMovie = this.movieRepository.findById(this.avatarMovie.getId()).get();
 
         assertNotNull(existingMovie);
-        assertEquals(this.avatarMovie.getGenera(), existingMovie.getGenera());
+        assertEquals(this.avatarMovie.getCategory(), existingMovie.getCategory());
     }
 
     @Test
-    @DisplayName("It should update the movie with new genera")
+    @DisplayName("It should update the movie with new category")
     void updateMovie() {
         this.movieRepository.save(this.avatarMovie);
 
         Movie existingMovie = this.movieRepository.findById(this.avatarMovie.getId()).get();
 
-        String newGenera = "Fantasy";
-        existingMovie.setGenera(newGenera);
+        String newCategory = "Fantasy";
+        existingMovie.setCategory(newCategory);
 
         Movie newMovie = this.movieRepository.save(existingMovie);
 
-        assertEquals(newGenera, newMovie.getGenera());
+        assertEquals(newCategory, newMovie.getCategory());
         assertEquals(this.avatarMovie.getName(), newMovie.getName());
     }
 
@@ -98,12 +98,12 @@ public class MovieRepositoryTest {
     }
 
     @Test
-    @DisplayName("It should return the movies list with genera")
-    void getMoviesByGenera() {
+    @DisplayName("It should return the movies list with category")
+    void getMoviesByCategory() {
         this.movieRepository.save(this.avatarMovie);
         this.movieRepository.save(this.titanicMovie);
 
-        List<Movie> movies = this.movieRepository.findByGenera(this.titanicMovie.getGenera());
+        List<Movie> movies = this.movieRepository.findByCategory(this.titanicMovie.getCategory());
 
         assertNotNull(movies);
         assertEquals(movies.size(), 1);

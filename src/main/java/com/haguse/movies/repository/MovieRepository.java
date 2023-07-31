@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    List<Movie> findByGenera(String genera);
+    List<Movie> findByCategory(String category);
 
 }

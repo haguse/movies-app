@@ -41,12 +41,12 @@ public class MovieIntegrationTest {
 
         this.avatarMovie = new Movie();
         this.avatarMovie.setName("Avatar");
-        this.avatarMovie.setGenera("Action");
+        this.avatarMovie.setCategory("Action");
         this.avatarMovie.setReleaseDate(LocalDate.of(1998, Month.FEBRUARY, 11));
 
         this.titanicMovie = new Movie();
         this.titanicMovie.setName("Titanic");
-        this.titanicMovie.setGenera("Romance");
+        this.titanicMovie.setCategory("Romance");
         this.titanicMovie.setReleaseDate(LocalDate.of(1986, Month.FEBRUARY, 11));
     }
 
@@ -107,13 +107,13 @@ public class MovieIntegrationTest {
         Movie newMovie = restTemplate.postForObject(baseUrl, this.avatarMovie, Movie.class);
         String newCategory = "Sports";
 
-        newMovie.setGenera(newCategory);
+        newMovie.setCategory(newCategory);
 
         restTemplate.put(baseUrl + "/{id}", newMovie, newMovie.getId());
         Movie updatedMovie = restTemplate.getForObject(baseUrl + "/" + newMovie.getId(), Movie.class);
 
         assertNotNull(updatedMovie);
-        assertEquals(newCategory, updatedMovie.getGenera());
+        assertEquals(newCategory, updatedMovie.getCategory());
     }
 
 }
